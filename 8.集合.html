@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 封装集合类
+        function Set() {
+            // 属性
+            this.items = {};
+
+            // 方法
+            // 1 has
+            Set.prototype.has = function(value) {
+                // hasOwnProperty(propertyName)方法 是用来检测属性是否为对象的自有属性，如果是，返回true，否者false; 参数propertyName指要检测的属性名；
+                return this.items.hasOwnProperty(value);
+            }
+
+            // 2 add
+            Set.prototype.add = function(value) {
+                if (this.has(value)) {
+                    return false;
+                } else {
+                    // 这里value的值是带引号的，所以写成【value】
+                    this.items[value] = value;
+                    return true;
+                }
+            }
+
+            // 3 remove
+            Set.prototype.remove = function(value) {
+                if (!this.has(value)) {
+                    return false;
+                } else {
+                    // delete 操作符用于删除对象的某个属性；如果没有指向这个属性的引用，那它最终会被释放。
+                    delete this.items[value];
+                    return true;
+                }
+            }
+
+            // 4 clear
+            Set.prototype.clear = function() {
+                this.items = {};
+                return true;
+            }
+
+            // 5 size
+            Set.prototype.size = function() {
+                // Object.keys(obj) —— 返回一个包含该对象所有的键的数组。
+                // Object.values(obj) —— 返回一个包含该对象所有的值的数组。
+                // Object.entries(obj) —— 返回一个包含该对象所有 [key, value] 键值对的数组。
+                return Object.keys(this.items).length;
+            }
+
+            // 6 获取集合所有的值
+            Set.prototype.values = function() {
+                return Object.values(this.items);
+            }
+
+            // 集合间的操作
+            // 并集
+            Set.prototype.union = function(anotherset) {
+                // 创建新集合
+                var unionset = new Set();
+                // 把原集合所有的值放到新集合里
+                var values = this.values();
+                for (var i = 0; i < this.size(); i++) {
+                    unionset.add(values[i]);
+                }
+                // 把anotherset里面所有的值也放到新集合里，因为add有判断，所以不会重复
+                values = anotherset.values();
+                for (i = 0; i < anotherset.size(); i++) {
+                    unionset.add(values[i]);
+                }
+                return unionset;
+            }
+
+            // 交集
+            Set.prototype.intersection = function(anotherset) {
+                var intersectionset = new Set();
+                // 从原集合中取出所有元素，再判断是否新集合中也有
+                var values = this.values();
+                for (var i = 0; i < this.size(); i++) {
+                    var current = values[i];
+                    if (anotherset.has(current)) {
+                        intersectionset.add(current);
+                    }
+                }
+                return intersectionset;
+            }
+
+            // 差集
+            // 差集是一种集合运算，记A，B是两个集合，则所有属于A且不属于B的元素构成的集合，叫做集合A减集合B
+            Set.prototype.difference = function(anotherset) {
+                var differenceset = new Set();
+                // 从原集合中取出所有元素，再判断是否新集合中也有
+                var values = this.values();
+                for (var i = 0; i < this.size(); i++) {
+                    var current = values[i];
+                    if (!anotherset.has(current)) {
+                        differenceset.add(current);
+                    }
+                }
+                return differenceset;
+            }
+
+            // 子集
+            Set.prototype.isSubset = function(anotherset) {
+                var current = this.values();
+                // 从原集合中取出所有元素，再判断是否新集合中也有
+                for (var i = 0; i < this.size(); i++) {
+                    if (!anotherset.has(current[i])) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        // 测试
+        var set = new Set();
+        set.add('whw');
+        set.add('love');
+        set.add('cxw');
+        set.add('hahaha');
+        set.remove('hahaha');
+        console.log(set.values());
+        // console.log(set.clear());
+        // console.log(set.size());
+
+        // 集合间操作
+        var anotherset = new Set();
+        anotherset.add('cxw');
+        anotherset.add('baby');
+        anotherset.add('mua');
+        var unionset = set.union(anotherset);
+        var intersectionset = set.intersection(anotherset);
+        var differenceset = set.difference(anotherset);
+        console.log(unionset.values());
+        console.log(intersectionset.values());
+        console.log(differenceset.values());
+        console.log(intersectionset.isSubset(set));
+    </script>
+</body>
+
+</html>

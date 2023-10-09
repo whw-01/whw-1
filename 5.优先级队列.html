@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function PriorityQueue() {
+            // 创建内部类
+            function QueueElement(element, priority) {
+                this.element = element;
+                this.priority = priority;
+            }
+
+            // 封装属性
+            this.items = [];
+
+            // 封装方法
+            //1. 插入
+            PriorityQueue.prototype.enqueue = function(element, priority) {
+                var queueElement = new QueueElement(element, priority);
+                if (this.items.length == 0) {
+                    this.items.push(queueElement);
+                } else {
+                    var flag = false;
+                    for (var i = 0; i < this.items.length; i++) {
+                        if (queueElement.priority < this.items[i].priority) {
+                            this.items.splice(i, 0, queueElement); // 从第i个开始，删除0个元素，并在第i个的元素后面添加queueElement
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag) {
+                        this.items.push(queueElement);
+                    }
+                }
+            }
+
+            // 2.移除队列里第一个元素
+            PriorityQueue.prototype.dequeue = function() {
+                return this.items.shift(); // shift，删除数组第一个元素，并返回这个元素的值
+            }
+
+            // 3.返回队列中第一个元素
+            PriorityQueue.prototype.front = function() {
+                return this.items[0];
+            }
+
+            // 4.判断队列是否为空
+            PriorityQueue.prototype.isEmpty = function() {
+                return this.items.length == 0;
+            }
+
+            // 5.返回队列元素个数
+            PriorityQueue.prototype.size = function() {
+                return this.items.length;
+            }
+
+            // toString()
+            PriorityQueue.prototype.toString = function() {
+                return this.items.join(' ');
+            }
+        }
+
+        var priorityqueue = new PriorityQueue();
+        priorityqueue.enqueue('cxw', 1);
+        priorityqueue.enqueue('whw', 3);
+        priorityqueue.enqueue('love', 2);
+        priorityqueue.enqueue('hahaha', 5);
+        console.log(priorityqueue.items);
+    </script>
+</body>
+
+</html>

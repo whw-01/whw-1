@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 基于数组封装队列
+        function Queue() {
+            // 属性
+            this.items = [];
+            // 方法
+            // 1.将某个元素放入队列
+            Queue.prototype.enqueue = function(e) {
+                this.items.push(e);
+            }
+
+            // 2.移除队列里第一个元素
+            Queue.prototype.dequeue = function() {
+                return this.items.shift(); // shift，删除数组第一个元素，并返回这个元素的值
+            }
+
+            // 3.返回队列中第一个元素
+            Queue.prototype.front = function() {
+                return this.items[0];
+            }
+
+            // 4.判断队列是否为空
+            Queue.prototype.isEmpty = function() {
+                return this.items.length == 0;
+            }
+
+            // 5.返回队列元素个数
+            Queue.prototype.size = function() {
+                return this.items.length;
+            }
+
+            // toString()
+            Queue.prototype.toString = function() {
+                return this.items.join(' ');
+            }
+        }
+
+        // 使用队列
+        var queue = new Queue();
+        queue.enqueue('I');
+        queue.enqueue('LOVE');
+        queue.enqueue('CXW');
+        console.log(queue.items);
+        queue.dequeue();
+        console.log(queue.items);
+        console.log(queue.front());
+        console.log(queue.isEmpty());
+        console.log(queue.size());
+        console.log(queue.toString());
+    </script>
+</body>
+
+</html>

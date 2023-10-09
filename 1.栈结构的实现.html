@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>栈的封装</title>
+</head>
+
+<body>
+    <script>
+        // 封装栈类
+        function Stack() {
+            // 栈中的属性
+            this.items = [];
+            // 栈的相关操作
+            // 1.将元素压入栈
+            // 1>this.push = function() {}
+            // 2>方法名() {}              这俩方式会给每一个Stack都封装这样的方法，所以占内存，经常使用下面的原型方式
+            Stack.prototype.push = function(e) { // 这个方式会设置一个公共的方法 占内存小，效率高
+                this.items.push(e);
+            }
+
+            // 2.从栈中取出元素
+            Stack.prototype.pop = function() {
+                return this.items.pop();
+            }
+
+            // 3.查看栈顶元素
+            Stack.prototype.peek = function() {
+                return this.items[this.items.length - 1];
+            }
+
+            // 4.判断栈是否为空
+            Stack.prototype.isEmpty = function() {
+                return this.items == 0;
+            }
+
+            // 5.获取栈中元素个数
+            Stack.prototype.size = function() {
+                return this.items.length;
+            }
+
+            // 6.toString()方法
+            Stack.prototype.toString = function() {
+                return this.items.join(' ');
+            }
+
+        }
+        // 栈的使用
+        var s = new Stack();
+        s.push('cxw');
+        s.push('love');
+        s.push('whw');
+        s.push('hahaha');
+        console.log(s.items);
+        s.pop();
+        console.log(s.items);
+        console.log(s.peek());
+        console.log(s.isEmpty());
+        console.log(s.size());
+        console.log(s.toString());
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        function BinarySerachTree() {
+            function Node(val) {
+                this.val = val;
+                this.left = null;
+                this.right = null;
+            }
+
+            this.root = null;
+
+            // 插入数据
+            BinarySerachTree.prototype.insert = function(val) {
+                var newnode = new Node(val);
+                if (this.root === null) {
+                    this.root = newnode;
+                } else {
+                    this.insertNode(this.root, newnode);
+                }
+            }
+
+            // 插入数据递归函数
+            BinarySerachTree.prototype.insertNode = function(node, newnode) {
+                if (node.val > newnode.val) {
+                    if (node.left != null) {
+                        // node = node.left; 这里应该写成递归
+                        this.insertNode(node.left, newnode);
+                    } else {
+                        node.left = newnode;
+                    }
+                } else {
+                    if (node.right != null) {
+                        this.insertNode(node.right, newnode);
+                    } else {
+                        node.right = newnode;
+                    }
+                }
+            }
+
+            // 先序遍历
+            BinarySerachTree.prototype.preOderTraversal = function(res) {
+                this.preOderTraversalNode(this.root, res);
+                return res;
+            }
+
+            // 先序遍历递归函数
+            BinarySerachTree.prototype.preOderTraversalNode = function(node, res) {
+                if (node != null) {
+                    res.push(node.val); // 先处理，再继续查找
+                    this.preOderTraversalNode(node.left, res);
+                    this.preOderTraversalNode(node.right, res);
+                }
+            }
+
+            // 中序遍历
+            BinarySerachTree.prototype.midOderTraversal = function(res) {
+                this.midOderTraversalNode(this.root, res);
+                return res;
+            }
+
+            // 中序遍历递归函数
+            BinarySerachTree.prototype.midOderTraversalNode = function(node, res) {
+                if (node != null) {
+                    this.midOderTraversalNode(node.left, res);
+                    res.push(node.val); // 先查找完左子树，再处理数据
+                    this.midOderTraversalNode(node.right, res);
+                }
+            }
+
+            // 后序遍历
+            BinarySerachTree.prototype.postOderTraversal = function(res) {
+                this.postOderTraversalNode(this.root, res);
+                return res;
+            }
+
+            // 后序遍历递归函数
+            BinarySerachTree.prototype.postOderTraversalNode = function(node, res) {
+                if (node != null) {
+                    this.postOderTraversalNode(node.left, res);
+                    this.postOderTraversalNode(node.right, res);
+                    res.push(node.val); // 先查找完左右子树，再处理数据
+                }
+            }
+        }
+
+
+        // 测试代码
+        var bst = new BinarySerachTree();
+        bst.insert(11);
+        bst.insert(7);
+        bst.insert(15);
+        bst.insert(5);
+        bst.insert(3);
+        bst.insert(9);
+        bst.insert(8);
+        bst.insert(10);
+        bst.insert(13);
+        bst.insert(12);
+        bst.insert(14);
+        bst.insert(20);
+        bst.insert(18);
+        bst.insert(25);
+        bst.insert(6);
+        console.log(bst);
+        var xianxu = [];
+        var zhongxu = [];
+        var houxu = [];
+        console.log(bst.preOderTraversal(xianxu));
+        console.log(bst.midOderTraversal(zhongxu));
+        console.log(bst.postOderTraversal(houxu));
+    </script>
+</body>
+
+</html>

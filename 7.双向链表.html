@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 封装双向链表
+        function DoublyLinledList() {
+            // 内部节点类
+            function DoublyNode(data) {
+                this.data = data;
+                this.prev = null;
+                this.next = null;
+            }
+
+            // 属性
+            this.head = null;
+            this.tail = null;
+            this.length = 0;
+
+            // 方法
+            // 1.append
+            DoublyLinledList.prototype.append = function(data) {
+                var newnode = new DoublyNode(data);
+                if (this.length == 0) {
+                    this.head = newnode;
+                    this.tail = newnode;
+                } else {
+                    this.tail.next = newnode;
+                    newnode.prev = this.tail;
+                    this.tail = newnode;
+                }
+                this.length++;
+            }
+
+            // 2.1 toString
+            DoublyLinledList.prototype.toString = function() {
+                return this.backward();
+            }
+
+            // 2.2 forward向前
+            DoublyLinledList.prototype.forward = function() {
+                var current = this.tail;
+                var result = '';
+                while (current) {
+                    result += current.data + ' ';
+                    current = current.prev;
+                }
+                return result;
+            }
+
+            // 2.3 backward向后
+            DoublyLinledList.prototype.backward = function() {
+                var current = this.head;
+                var result = '';
+                while (current) {
+                    result += current.data + ' ';
+                    current = current.next;
+                }
+                return result;
+            }
+
+            // 3 insert
+            DoublyLinledList.prototype.insert = function(position, data) {
+                // 越界判断
+                if (position < 0 || position > this.length) {
+                    return false;
+                }
+                var newnode = new DoublyNode(data);
+                // 判断是否为空
+                if (this.length == 0) {
+                    this.head = newnode;
+                    this.tail = newnode;
+                } else {
+                    // 是不是插入到首位置
+                    if (position == 0) {
+                        this.head.prev = newnode;
+                        newnode.next = this.head;
+                        this.head = newnode;
+                    } else if (position == this.length) { //是不是插到尾位置
+                        this.tail.next = newnode;
+                        newnode.prev = this.tail;
+                        this.tail = newnode;
+                    } else { // 插到中间位置
+                        var current = this.head;
+                        for (var i = 0; i < position; i++) {
+                            current = current.next;
+                        }
+                        newnode.prev = current.prev;
+                        newnode.next = current;
+                        current.prev.next = newnode;
+                        current.prev = newnode;
+                    }
+                }
+                this.length++;
+                return true;
+            }
+
+            // 4 get
+            DoublyLinledList.prototype.get = function(position) {
+                // 越界判断
+                if (position < 0 || position >= this.length) {
+                    return null;
+                } else if (position < this.length / 2) {
+                    var current = this.head;
+                    for (var i = 0; i < position; i++) {
+                        current = current.next;
+                    }
+                    return current.data;
+                } else {
+                    var current = this.tail;
+                    for (var i = this.length - 1; i > position; i--) {
+                        current = current.prev;
+                    }
+                    return current.data;
+                }
+            }
+
+            // 5 indexOf
+            DoublyLinledList.prototype.indexOf = function(data) {
+                var current = this.head;
+                var index = 0;
+                while (current) {
+                    if (current.data == data) {
+                        return index;
+                    }
+                    current = current.next;
+                    index++;
+                }
+                return -1;
+            }
+
+            // 6 update
+            DoublyLinledList.prototype.update = function(position, newdata) {
+                // 越界判断
+                if (position < 0 || position >= this.length) {
+                    return false;
+                } else if (position < this.length / 2) {
+                    var current = head;
+                    for (var i = 0; i < this.length; i++) {
+                        current = current.next;
+                    }
+                    current.data = newdata;
+                } else {
+                    var current = this.tail;
+                    for (var i = this.length - 1; i > position; i--) {
+                        current = current.prev;
+                    }
+                    current.data = newdata;
+                }
+                return true;
+            }
+
+            // 7 removeAt
+            DoublyLinledList.prototype.removeAt = function(position) {
+                // 越界判断
+                if (position < 0 || position >= this.length) {
+                    return null;
+                }
+                // 判断是否只有一个节点
+                if (this.length == 1) {
+                    this.head = null;
+                    this.tail = null;
+                } else if (position == 0) {
+                    // 删除首节点情况
+                    this.head.next.prev = null;
+                    this.head = this.head.next;
+                } else if (position == this.length - 1) {
+                    // 删除尾节点情况
+                    this.tail.prev.next = null;
+                    this.tail = this.tail.prev;
+                } else {
+                    // 删除中间节点
+                    if (position < length / 2) {
+                        var current = this.head;
+                        for (var i = 0; i < position; i++) {
+                            current = current.next;
+                        }
+                        current.prev.next = current.next;
+                        current.next.prev = current.prev;
+                    } else {
+                        var current = this.tail;
+                        for (var i = this.length - 1; i > position; i--) {
+                            current = current.prev;
+                        }
+                        current.prev.next = current.next;
+                        current.next.prev = current.prev;
+                    }
+                }
+                this.length--;
+                return current.data;
+            }
+
+            // 8 remove
+            DoublyLinledList.prototype.remove = function(data) {
+                var index = this.indexOf(data);
+                return this.removeAt(index);
+            }
+
+            // 9 isEmpty
+            DoublyLinledList.prototype.isEmpty = function() {
+                return this.length == 0;
+            }
+
+            // 10 size 
+            DoublyLinledList.prototype.size = function() {
+                return this.length;
+            }
+        }
+
+        // 测试
+        var dblist = new DoublyLinledList();
+        dblist.append('cxw');
+        dblist.append('will');
+        dblist.append('marry');
+        dblist.append('whw');
+        dblist.append('haha');
+        console.log(dblist.insert(3, 'me'));
+        console.log(dblist.get(5));
+        console.log(dblist.indexOf('whw'));
+        console.log(dblist.update(5, 'hahaha'));
+        console.log(dblist.removeAt(1));
+        console.log(dblist.remove('whw'));
+        console.log(dblist);
+        console.log(dblist.toString());
+    </script>
+</body>
+
+</html>

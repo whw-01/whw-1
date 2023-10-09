@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 封装栈类
+        function Stack() {
+            // 栈中的属性
+            this.items = [];
+            // 栈的相关操作
+            // 1.将元素压入栈
+            Stack.prototype.push = function(e) { // 这个方式会设置一个公共的方法 占内存小，效率高
+                this.items.push(e);
+            }
+
+            // 2.从栈中取出元素
+            Stack.prototype.pop = function() {
+                return this.items.pop();
+            }
+
+            // 3.查看栈顶元素
+            Stack.prototype.peek = function() {
+                return this.items[this.items.length - 1];
+            }
+
+            // 4.判断栈是否为空
+            Stack.prototype.isEmpty = function() {
+                return this.items.length == 0;
+            }
+
+            // 5.获取栈中元素个数
+            Stack.prototype.size = function() {
+                return this.items.length;
+            }
+
+            // 6.toString()方法
+            Stack.prototype.toString = function() {
+                return this.items.join(' ');
+            }
+
+        }
+
+        // 十进制转二进制函数
+        function shitoer(numberS) {
+            // 定义一个栈对象
+            var stack = new Stack();
+            var numberS;
+            while (numberS > 0) {
+                stack.push(numberS % 2);
+                numberS = parseInt(numberS / 2);
+            }
+            // 利用栈的特性取值
+            var result = '';
+            while (!stack.isEmpty()) {
+                result += stack.pop();
+            }
+            return result;
+        }
+        console.log(shitoer(1000));
+    </script>
+</body>
+
+</html>
